@@ -1,0 +1,70 @@
+{% extends 'App/base.html' %}
+{% block title %}
+  Json URL
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row m-5">
+      <div class="lg-col-6 sm-col-12 mx-auto">
+        <form method="post">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="inputField" placeholder="URL:" aria-label="URL" name="query_data" aria-describedby="button-addon2" />
+            <button class="btn btn-info" onclick="saveInputValue()" type="submit" id="button-addon2" data-mdb-ripple-color="dark">Query</button>
+          </div>
+        </form>
+      </div>
+      <div class="row">
+        <div class="col lg-col-6 md-col-12 ">
+          <div class="container">
+            <h4 class="text-center m-3">URL Response</h4>
+            <div class="container border border-5">
+              {% if json_data_d %}
+                <pre>{{ json_data_d|safe }}</pre>
+                {% elif error_message %}
+                <p>{{ error_message }}</p>
+              {% else %}
+                <p class="fs-4">No JSON Data response</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col lg-col-6 md-col-12">
+          <div class="container">
+            <h4 class="text-center m-3">Process URL Response</h4>
+            <div class="container border border-5">
+              <!-- json dumps here -->
+              {% if data %}
+                <pre>{{ data|safe }}</pre>
+                {% elif error_message %}
+                <p>{{ error_message }}</p>
+              {% else %}
+                <p class="fs-4">No JSON Data to Process</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+
+    // Function to save the input value in localStorage
+    function saveInputValue() {
+      var inputValue = document.getElementById('inputField').value
+      localStorage.setItem('savedInput', inputValue)
+    }
+    
+    // Function to retrieve and set the input value from localStorage
+    function setInputValue() {
+      var savedInput = localStorage.getItem('savedInput')
+      if (savedInput) {
+        document.getElementById('inputField').value = savedInput
+      }
+    }
+    
+    // Call setInputValue() when the page loads to populate the input
+    setInputValue()
+  </script>
+{% endblock %}
